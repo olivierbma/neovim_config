@@ -47,6 +47,7 @@ vim.bo.shiftwidth = 2
 vim.bo.expandtab = true
 vim.bo.softtabstop = 2
 
+vim.cmd(':se cursorline')
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
