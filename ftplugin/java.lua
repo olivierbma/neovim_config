@@ -1,4 +1,4 @@
-local home = 'C:\\Users\\Olivier\\'
+local home = 'C:\\Users\\Jopiolgui\\'
 local jdtls = require('jdtls')
 
 
@@ -10,6 +10,9 @@ vim.bo.tabstop = 2      -- size of a hard tabstop (ts).
 vim.bo.shiftwidth = 2   -- size of an indentation (sw).
 vim.bo.expandtab = true -- always uses spaces instead of tab characters (et).
 vim.bo.softtabstop = 2  -- number of spaces a <Tab> counts for. When 0, feature is off (sts).
+vim.o.pumheight = 7
+
+
 
 -- 💀
 -- This is the default if not provided, you can remove it. Or adjust as needed.
@@ -117,17 +120,18 @@ local config = {
     '--add-modules=ALL-SYSTEM',
     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.awt=ALL-UNNAMED',
 
     -- 💀
     '-jar',
-    'C:\\Users\\Olivier\\AppData\\Roaming\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    'C:\\Users\\Jopioligui\\AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
 
 
     -- 💀
-    '-configuration', 'C:\\Users\\Olivier\\AppData\\Roaming\\nvim-data\\mason\\packages\\jdtls\\config_win',
+    '-configuration', 'C:\\Users\\Jopioligui\\AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\config_win',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
     -- Must point to the                      Change to one of `linux`, `win` or `mac`
     -- eclipse.jdt.ls installation            Depending on your system.
@@ -155,8 +159,10 @@ local config = {
   -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
 
 
-  bundles = {
-    'C:\\Users\\Olivier\\AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin\\target\\com.microsoft.java.debug.plugin-0.44.0.jar' }
+  init_options = {
+    bundles = {
+    'C:\\Users\\Jopioligui\\AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.44.0.jar' }
+  }
 }
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.

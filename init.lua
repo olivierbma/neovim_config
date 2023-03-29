@@ -40,6 +40,7 @@ P.S. You can delete this when you're done too. It's your config now :)
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.o.fileencoding ='utf-8'
 
 vim.bo.tabstop = 2
 vim.bo.shiftwidth = 2
@@ -117,6 +118,14 @@ require('lazy').setup({
 
   {
     'mfussenegger/nvim-jdtls',
+  },
+
+  {
+    'simrat39/rust-tools.nvim'
+  },
+
+  {
+    'mfussenegger/nvim-dap-python'
   },
 
 
@@ -219,7 +228,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  --  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -230,7 +239,7 @@ require('lazy').setup({
   --
   --    An additional note is that if you only copied in the `init.lua`, you can just comment this line
   --    to get rid of the warning telling you that there are not plugins in `lua/custom/plugins/`.
-  { import = 'custom.plugins' },
+  -- { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -523,21 +532,21 @@ require("dapui").setup({
     layouts = { {
         elements = { {
             id = "scopes",
-            size = 0.75
+            size = 0.8
           }, {
             id = "stacks",
-            size = 0.25
+            size = 0.2
           }, },
         position = "left",
         size = 40
       }, {
-        elements = { {
+        elements = {  {
+            id = "console",
+            size = 0.6
+          },{
             id = "repl",
-            size = 0.5
-          }, {
-            id = "breakpoints",
-            size = 0.5
-          } },
+            size = 0.4
+          }, },
         position = "bottom",
         size = 10
       } },
@@ -572,6 +581,8 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
+
+vim.keymap.set('n', 'dq', dapui.close, {desc = "[D]ap-ui [Q]uit"})
 
 
 -- autoclose bracket pairs
