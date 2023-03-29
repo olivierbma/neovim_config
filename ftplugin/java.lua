@@ -26,7 +26,7 @@ local root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew' })
 -- current project found using the root_marker as the folder for project specific data.
 -- local workspace_folder = root_dir .. '/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_folder = vim.fn.fnamemodify(root_dir, ':h') ..
-    '/workspace/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+    '/workspace/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
 print(workspace_folder)
 -- Helper function for creating keymaps
 function nnoremap(rhs, lhs, bufopts, desc)
