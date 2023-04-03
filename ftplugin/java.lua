@@ -1,4 +1,4 @@
-local home = 'C:\\Users\\Jopiolgui\\'
+local home = 'C:\\Users\\Olivier\\'
 local jdtls = require('jdtls')
 
 
@@ -124,14 +124,14 @@ local config = {
 
     -- 💀
     '-jar',
-    'C:\\Users\\Jopioligui\\AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    home .. 'AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
 
 
     -- 💀
-    '-configuration', 'C:\\Users\\Jopioligui\\AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\config_win',
+    '-configuration', home .. 'AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\config_win',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
     -- Must point to the                      Change to one of `linux`, `win` or `mac`
     -- eclipse.jdt.ls installation            Depending on your system.
@@ -161,7 +161,7 @@ local config = {
 
   init_options = {
     bundles = {
-    'C:\\Users\\Jopioligui\\AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.44.0.jar' }
+    home .. 'AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.44.0.jar' }
   }
 }
 -- This starts a new client & server,

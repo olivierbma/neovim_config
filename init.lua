@@ -40,12 +40,15 @@ P.S. You can delete this when you're done too. It's your config now :)
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.o.fileencoding ='utf-8'
+vim.g.fileencoding = 'utf-8'
+vim.bo.fileencoding = 'utf-8'
+vim.o.fileencoding = 'utf-8'
 
 vim.bo.tabstop = 2
 vim.bo.shiftwidth = 2
 vim.bo.expandtab = true
 vim.bo.softtabstop = 2
+vim.o.scrolloff = 9
 
 vim.cmd(':se cursorline')
 -- Install package manager
@@ -106,20 +109,21 @@ require('lazy').setup({
 
   {
     'm4xshen/autoclose.nvim',
-    config = function ()
-      require('autoclose').setup()      
+    config = function()
+      require('autoclose').setup()
     end,
   },
 
   {
     "rcarriga/nvim-dap-ui",
-    dependencies = {"mfussenegger/nvim-dap"}
+    dependencies = { "mfussenegger/nvim-dap" }
   },
 
 
   {
     'mfussenegger/nvim-jdtls',
   },
+
 
   {
     'simrat39/rust-tools.nvim'
@@ -130,6 +134,13 @@ require('lazy').setup({
   },
 
 
+  {
+    'onsails/lspkind.nvim',
+  },
+
+  {
+    {'akinsho/toggleterm.nvim', version = "*", }
+  },
 
   -- set the bar up top with the currently openend buffers
   {
@@ -224,6 +235,10 @@ require('lazy').setup({
     config = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-context',
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -457,19 +472,19 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
-vim.keymap.set('n', '<leader>rn', require('vim.lsp.buf').rename,{desc= 'LSP [R]e[N]ame'})
-vim.keymap.set('n', '<leader>ca', require('vim.lsp.buf').code_action, {desc='LSP [C]ode [A]ction'})
-vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, {desc='LSP [G]oto [R]eferences'})
-vim.keymap.set('n', '<leader>D', require('vim.lsp.buf').type_definition, {desc='LSP type [D]efinition'})
-vim.keymap.set('n', 'K', require('vim.lsp.buf').hover, {desc='LSP Hover Documentation'})
-vim.keymap.set('n', '<C-K>', require('vim.lsp.buf').signature_help, {desc='LSP Signature Documentation'})
-vim.keymap.set('n', 'gD', require('vim.lsp.buf').declaration, {desc='LSP [G]oto [D]eclaration'})
-vim.keymap.set('n', 'gI', require('vim.lsp.buf').implementation, {desc='LSP [G]oto [I]plementation'})
-vim.keymap.set('n', 'gd', require('vim.lsp.buf').definition, {desc='LSP [G]oto [D]efinition'})
+vim.keymap.set('n', '<leader>rn', require('vim.lsp.buf').rename, { desc = 'LSP [R]e[N]ame' })
+vim.keymap.set('n', '<leader>ca', require('vim.lsp.buf').code_action, { desc = 'LSP [C]ode [A]ction' })
+vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'LSP [G]oto [R]eferences' })
+vim.keymap.set('n', '<leader>D', require('vim.lsp.buf').type_definition, { desc = 'LSP type [D]efinition' })
+vim.keymap.set('n', 'K', require('vim.lsp.buf').hover, { desc = 'LSP Hover Documentation' })
+vim.keymap.set('n', '<C-K>', require('vim.lsp.buf').signature_help, { desc = 'LSP Signature Documentation' })
+vim.keymap.set('n', 'gD', require('vim.lsp.buf').declaration, { desc = 'LSP [G]oto [D]eclaration' })
+vim.keymap.set('n', 'gI', require('vim.lsp.buf').implementation, { desc = 'LSP [G]oto [I]plementation' })
+vim.keymap.set('n', 'gd', require('vim.lsp.buf').definition, { desc = 'LSP [G]oto [D]efinition' })
 
 -- Buffer navigation keymaps
 
-vim.keymap.set('n','gp',"<C-^>", {desc = "[G]oto [P]revious buffer"})
+vim.keymap.set('n', 'gp', "<C-^>", { desc = "[G]oto [P]revious buffer" })
 
 
 -- Enable the following language servers
@@ -501,75 +516,75 @@ require("neodev").setup({
 --dap-ui dapui setup
 
 require("dapui").setup({
-    controls = {
-      element = "repl",
-      enabled = true,
-      icons = {
-        disconnect = "",
-        pause = "",
-        play = "",
-        run_last = "",
-        step_back = "",
-        step_into = "",
-        step_out = "",
-        step_over = "",
-        terminate = ""
-      }
-    },
-    element_mappings = {},
-    expand_lines = true,
-    floating = {
-      border = "single",
-      mappings = {
-        close = { "q", "<Esc>" }
-      }
-    },
-    force_buffers = true,
+  controls = {
+    element = "repl",
+    enabled = true,
     icons = {
-      collapsed = "",
-      current_frame = "",
-      expanded = ""
-    },
-    layouts = { {
-        elements = { {
-            id = "scopes",
-            size = 0.8
-          }, {
-            id = "stacks",
-            size = 0.2
-          }, },
-        position = "left",
-        size = 40
-      }, {
-        elements = {  {
-            id = "console",
-            size = 0.6
-          },{
-            id = "repl",
-            size = 0.4
-          }, },
-        position = "bottom",
-        size = 10
-      } },
-    mappings = {
-      edit = "e",
-      expand = { "<CR>", "<2-LeftMouse>" },
-      open = "o",
-      remove = "d",
-      repl = "r",
-      toggle = "t"
-    },
-    render = {
-      indent = 1,
-      max_value_lines = 100
+      disconnect = "",
+      pause = "",
+      play = "",
+      run_last = "",
+      step_back = "",
+      step_into = "",
+      step_out = "",
+      step_over = "",
+      terminate = ""
     }
+  },
+  element_mappings = {},
+  expand_lines = true,
+  floating = {
+    border = "single",
+    mappings = {
+      close = { "q", "<Esc>" }
+    }
+  },
+  force_buffers = true,
+  icons = {
+    collapsed = "",
+    current_frame = "",
+    expanded = ""
+  },
+  layouts = { {
+    elements = { {
+      id = "scopes",
+      size = 0.8
+    }, {
+      id = "stacks",
+      size = 0.2
+    }, },
+    position = "left",
+    size = 40
+  }, {
+    elements = { {
+      id = "console",
+      size = 0.66
+    }, {
+      id = "repl",
+      size = 0.34
+    }, },
+    position = "bottom",
+    size = 10
+  } },
+  mappings = {
+    edit = "e",
+    expand = { "<CR>", "<2-LeftMouse>" },
+    open = "o",
+    remove = "d",
+    repl = "r",
+    toggle = "t"
+  },
+  render = {
+    indent = 1,
+    max_value_lines = 100
   }
+}
 )
 
 
-vim.keymap.set("n", "<F9>", require('dap').toggle_breakpoint, { desc = 'Add or remove a breakpoint to a line'} )
-vim.keymap.set("n","<F10>", require('dap').step_over, {desc = 'Execute function as a single command'})
-vim.keymap.set("n", "<F11>", require('dap').step_into, {desc = 'Execute line and go to the next one'})
+vim.keymap.set("n", "<F9>", require('dap').toggle_breakpoint, { desc = 'Add or remove a breakpoint to a line' })
+vim.keymap.set("n", "<F10>", require('dap').step_over, { desc = 'Execute function as a single command' })
+vim.keymap.set("n", "<F11>", require('dap').step_into, { desc = 'Execute line and go to the next one' })
 
 
 local dap, dapui = require("dap"), require("dapui")
@@ -583,22 +598,25 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
-vim.keymap.set('n', 'dq', dapui.close, {desc = "[D]ap-ui [Q]uit"})
+vim.keymap.set('n', 'dq', dapui.close, { desc = "[D]ap-ui [Q]uit" })
+
+
+
 
 
 -- autoclose bracket pairs
 require('autoclose').setup {
   keys = {
-    ["("] = {escape = true, close = true, pair = "()"},
-    ["'"] = {escape = true, close = true, pair = "''"},
-    ["{"] = {escape = true, close = true, pair = "{}"},
-    ["["] = {escape = true, close = true, pair = "[]"},
-    ["\""] = {escape = true, close = true, pair = "\"\""},
+    ["("] = { escape = true, close = true, pair = "()" },
+    ["'"] = { escape = true, close = true, pair = "''" },
+    ["{"] = { escape = true, close = true, pair = "{}" },
+    ["["] = { escape = true, close = true, pair = "[]" },
+    ["\""] = { escape = true, close = true, pair = "\"\"" },
   }
 
 }
 
-vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current buffer'})
+vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current buffer' })
 
 
 
@@ -671,6 +689,33 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+local lspkind = require('lspkind')
+cmp.setup {
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol_text', -- show only symbol annotations
+      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+      ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+
+      -- The function below will be called before any actual modifications from lspkind
+      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+      before = function (entry, vim_item)
+        return vim_item
+      end
+    })
+  }
+}
+
+
+local toggleterm = require('toggleterm')
+
+toggleterm.setup{
+  direction = 'float'
+}
+
+vim.keymap.set('n','<leader>t',':ToggleTerm <CR>', {desc = "[T]oggle [T]erminal"})
+vim.keymap.set('t','<ESC>',[[<C-\><C-n>]], {noremap = true, desc= "Go in normal mode when in terminal"})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
