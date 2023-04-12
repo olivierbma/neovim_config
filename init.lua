@@ -139,7 +139,11 @@ require('lazy').setup({
   },
 
   {
-    {'akinsho/toggleterm.nvim', version = "*", }
+    { 'akinsho/toggleterm.nvim', version = "*", }
+  },
+
+  {
+    'nanotee/sqls.nvim',
   },
 
   -- set the bar up top with the currently openend buffers
@@ -188,12 +192,17 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
+        icons_enabled = true,
         theme = 'gruvbox',
         component_separators = '|',
         section_separators = '',
       },
+      sections = {
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_c = { 'filename' },
+      },
     },
+    dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
 
   {
@@ -694,13 +703,12 @@ local lspkind = require('lspkind')
 cmp.setup {
   formatting = {
     format = lspkind.cmp_format({
-      mode = 'symbol_text', -- show only symbol annotations
-      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+      mode = 'symbol_text',  -- show only symbol annotations
+      maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
       ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-
       -- The function below will be called before any actual modifications from lspkind
       -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-      before = function (entry, vim_item)
+      before = function(entry, vim_item)
         return vim_item
       end
     })
@@ -710,12 +718,12 @@ cmp.setup {
 
 local toggleterm = require('toggleterm')
 
-toggleterm.setup{
+toggleterm.setup {
   direction = 'float'
 }
 
-vim.keymap.set('n','<leader>t',':ToggleTerm <CR>', {desc = "[T]oggle [T]erminal"})
-vim.keymap.set('t','<ESC>',[[<C-\><C-n>]], {noremap = true, desc= "Go in normal mode when in terminal"})
+vim.keymap.set('n', '<leader>t', ':ToggleTerm <CR>', { desc = "[T]oggle [T]erminal" })
+vim.keymap.set('t', '<ESC>', [[<C-\><C-n>]], { noremap = true, desc = "Go in normal mode when in terminal" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

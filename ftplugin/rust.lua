@@ -1,4 +1,4 @@
-local home = "C:/Users/Olivier/"
+local home = "C:/Users/Jopioligui/"
 
 
 -- Normal setup
@@ -7,6 +7,7 @@ local dap = require("dap")
 vim.keymap.set("n", "<F5>", dap.continue, { desc = 'Start or continue debug execution' })
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+local rt = require('rust-tools').setup()
 
 
 -- local extension_path = home .. ".vscode/extensions/vadimcn.vscode-lldb-1.9.0/" -- Update this path

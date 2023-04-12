@@ -1,4 +1,4 @@
-local home = 'C:\\Users\\Olivier\\'
+local home = 'C:\\Users\\Jopioligui\\'
 local jdtls = require('jdtls')
 
 
@@ -108,7 +108,7 @@ local config = {
   cmd = {
 
     -- 💀
-    'C:\\Program Files\\OpenJDK\\jdk-19.0.2\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
+    'C:\\Program Files\\OpenJDK\\jdk-20\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
@@ -173,7 +173,7 @@ require('jdtls').start_or_attach(config)
 
 -- debug
 
-function setup_debug()
+local function setup_debug()
   print('Setting up and  starting the debugger')
   require('jdtls.dap').setup_dap_main_class_configs()
   require('dap').continue()
@@ -182,3 +182,5 @@ end
 -- require('jdtls.dap').setup_dap_main_class_configs()
 --
 vim.keymap.set("n", "<F5>", setup_debug, { desc = 'Start or continue debug execution' })
+
+
