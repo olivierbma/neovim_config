@@ -1,4 +1,4 @@
-local home = "C:/Users/Jopioligui/"
+local home = "C:/Users/Olivier/"
 
 local dapp = require('dap-python')
 dapp.setup(home .. "AppData\\Local\\nvim-data\\mason\\packages\\debugpy\\venv\\Scripts\\python.exe")

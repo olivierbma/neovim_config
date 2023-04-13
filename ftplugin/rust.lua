@@ -1,10 +1,30 @@
-local home = "C:/Users/Jopioligui/"
+local home = "C:/Users/Olivier/"
 
 
 -- Normal setup
 
 local dap = require("dap")
-vim.keymap.set("n", "<F5>", dap.continue, { desc = 'Start or continue debug execution' })
+
+local debug_session_active = false;
+
+dap.listeners.after.event_initialized["debug_on_save"] = function()
+  debug_session_active = true
+end
+dap.listeners.before.event_terminated["debug_on_save"] = function()
+  debug_session_active = false
+end
+dap.listeners.before.event_exited["debug_on_save"] = function()
+  debug_session_active = false
+end
+
+local function setup_debug()
+  if debug_session_active == false then
+    vim.cmd('write')
+    os.execute('cargo build')
+  end
+  require('dap').continue()
+end
+vim.keymap.set("n", "<F5>", setup_debug, { desc = 'Start or continue debug execution' })
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local rt = require('rust-tools').setup()
@@ -33,7 +53,7 @@ dap.adapters.codelldb = {
 
 local root_dir = vim.fs.dirname(vim.fs.find({'Cargo.toml', '.git'}, { upward = true })[1])
 local program_name =  vim.fn.fnamemodify(root_dir, ':p:h:t')
-local program_path = root_dir .. '/target/debug/' .. program_name .. '.exe'
+local program_path = root_dir .. '/target/debug/' .. program_name .. '.pdb'
 
 dap.configurations.rust = {
   {
