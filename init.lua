@@ -50,6 +50,20 @@ vim.bo.expandtab = true
 vim.bo.softtabstop = 2
 vim.o.scrolloff = 9
 
+-- Scale/UI size in neovide
+vim.g.neovide_scale_factor = 1.0
+
+
+local function increase_scale_factor()
+  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * 1.25
+end
+local function decrease_scale_factor()
+  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * (1 / 1.25)
+end
+vim.keymap.set("n", '<A-=>', increase_scale_factor, { desc = "Increase Font/UI size" })
+
+vim.keymap.set("n",'<A-->' , decrease_scale_factor, { desc = "Reduce Font/UI size" })
+
 vim.cmd(':se cursorline')
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -133,6 +147,9 @@ require('lazy').setup({
     'mfussenegger/nvim-dap-python'
   },
 
+  {
+    'Shatur/neovim-cmake',
+  },
 
   {
     'onsails/lspkind.nvim',

@@ -188,7 +188,7 @@ end
 
 local function setup_debug()
   if debug_session_active == false then
-    vim.cmd('write')
+    vim.cmd('wall')
     require('jdtls.dap').setup_dap_main_class_configs()
   end
   require('dap').continue()

@@ -1,4 +1,28 @@
-local home = "C:/Users/Olivier/"
+local home = 'C:/Users/Olivier/'
+local root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1])
+local program_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
+
+
+function CMakeSetup()
+  root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1])
+  os.execute('cd ' ..
+    root_dir ..
+    '& mkdir build & cd build && cmake.exe -G \"Ninja\" -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++ ..')
+  print("something")
+end
+
+function CMakeBuild()
+  root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1])
+  os.execute('cd ' .. root_dir .. ' && cmake --build build')
+end
+
+vim.api.nvim_create_user_command('CMakeSetup', CMakeSetup, {})
+
+
+
+
+
+
 
 
 local dap = require("dap")
@@ -18,14 +42,14 @@ end
 local function setup_debug()
   if debug_session_active == false then
     vim.cmd('wa')
-    os.execute('zig build')
+    CMakeBuild()
   end
   require('dap').continue()
 end
 
-
 vim.keymap.set("n", "<F5>", setup_debug, { desc = 'Start or continue debug execution' })
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+
 
 
 -- local extension_path = home .. ".vscode/extensions/vadimcn.vscode-lldb-1.9.0/" -- Update this path
@@ -45,30 +69,19 @@ dap.adapters.codelldb = {
     command = codelldb_path,
     args = { "--port", "${port}" },
     -- On windows you may have to uncomment this:
-    detached = true,
+    -- detached = false,
   }
 }
 
+local program_path = root_dir .. '/build/src/' .. program_name .. '.exe'
 
-
-
-
-
-local root_dir = vim.fs.dirname(vim.fs.find({ 'build.zig', '.git' }, { upward = true })[1])
-local program_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
-local program_path = root_dir .. '/zig-out/bin/' .. program_name .. '.exe'
-local debug_symbols = root_dir .. '/zig-out/bin/' .. program_name .. '.pdb'
-
-dap.configurations.zig = {
+dap.configurations.c = {
   {
     name = "Launch file",
     type = "codelldb",
     request = "launch",
-    args = {},
     program = program_path,
-    symbolsSearchPath = root_dir .. '/zig-out/bin',
-    additionalSOLibSearchPath = debug_symbols,
-    cwd = root_dir,
+    cwd = '${workspaceFolder}',
     stopOnEntry = false,
-  }
+  },
 }

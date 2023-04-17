@@ -19,11 +19,12 @@ end
 
 local function setup_debug()
   if debug_session_active == false then
-    vim.cmd('write')
+    vim.cmd('wa')
     os.execute('cargo build')
   end
   require('dap').continue()
 end
+
 vim.keymap.set("n", "<F5>", setup_debug, { desc = 'Start or continue debug execution' })
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
