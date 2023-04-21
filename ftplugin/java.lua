@@ -20,6 +20,7 @@ vim.o.pumheight = 7
 local root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew' })
 
 
+
 -- eclipse.jdt.ls stores project specific data within a folder. If you are working
 -- with multiple different projects, each project must use a dedicated data directory.
 -- This variable is used to configure eclipse to use the directory name of the
@@ -70,8 +71,6 @@ local on_attach = function(_, bufnr)
   --
   --   vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   -- end
-
-
   --
   -- nnoremap('<leader>wl', function()
   --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
@@ -194,7 +193,12 @@ local function setup_debug()
   require('dap').continue()
 end
 
+local function find_files_curr_dir()
+  require('telescope.builtin').find_files({ root_dir })
+end
 
+
+vim.keymap.set('n', "<leader>sf", find_files_curr_dir, {desc = '[S]earch [F]iles'})
 
 -- require('jdtls.dap').setup_dap_main_class_configs()
 --
