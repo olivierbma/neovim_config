@@ -62,7 +62,7 @@ local function decrease_scale_factor()
 end
 vim.keymap.set("n", '<A-=>', increase_scale_factor, { desc = "Increase Font/UI size" })
 
-vim.keymap.set("n",'<A-->' , decrease_scale_factor, { desc = "Reduce Font/UI size" })
+vim.keymap.set("n", '<A-->', decrease_scale_factor, { desc = "Reduce Font/UI size" })
 
 vim.cmd(':se cursorline')
 -- Install package manager
@@ -453,6 +453,8 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- LSP settings.
+
+
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -663,12 +665,16 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-    }
+      require('lspconfig')[server_name].setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = servers[server_name],
+      }
   end,
+
+  ["jdtls"] = function()
+    
+  end
 }
 
 -- nvim-cmp setup

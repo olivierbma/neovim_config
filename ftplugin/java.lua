@@ -1,6 +1,8 @@
 local home = 'C:\\Users\\Olivier\\'
 local jdtls = require('jdtls')
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 
 vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current buffer' })
@@ -38,6 +40,7 @@ end
 -- The on_attach function is used to set key maps after the language server
 -- attaches to the current buffer
 local on_attach = function(_, bufnr)
+  require('jdtls.dap').setup_dap_main_class_configs()
   -- Regular Neovim LSP client keymappings
   -- local bufopts = { noremap = true, silent = true, buffer = bufnr }
   -- nnoremap('gD', vim.lsp.buf.declaration, bufopts, "Go to declaration")
@@ -77,29 +80,6 @@ local on_attach = function(_, bufnr)
   -- end, '[W]orkspace [L]ist Folders')
 end
 
--- nnoremap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
--- nnoremap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
---
--- nnoremap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
--- nnoremap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
--- nnoremap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
--- nnoremap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
--- nnoremap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
--- nnoremap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
---
--- -- See `:help K` for why this keymap
--- nnoremap('K', vim.lsp.buf.hover, 'Hover Documentation')
--- nnoremap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
---
--- -- Lesser used LSP functionality
--- nnoremap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
--- nnoremap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
--- nnoremap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-
-
-
-
-
 
 local config = {
   -- The command that starts the language server
@@ -107,7 +87,7 @@ local config = {
   cmd = {
 
     -- 💀
-    'C:\\Program Files\\OpenJDK\\jdk-20\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
+    'C:\\Program Files\\OpenJDK\\jdk-20.0.1\\bin\\java.exe',   -- or '/path/to/java17_or_newer/bin/java'
     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
@@ -119,7 +99,7 @@ local config = {
     '--add-modules=ALL-SYSTEM',
     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-    '--add-opens', 'java.base/java.awt=ALL-UNNAMED',
+    '--add-opens', 'java.desktop/java.awt=ALL-UNNAMED',
 
     -- 💀
     '-jar',
@@ -142,6 +122,7 @@ local config = {
     '-data', workspace_folder
   },
   root_dir = root_dir,
+  -- capabilities = capabilities,
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
   -- for a list of options
@@ -149,7 +130,8 @@ local config = {
     java = {
     }
   },
-  on_attach = require('jdtls').setup_dap({ hotcodereplace = 'auto' }),
+  -- { hotcodereplace = 'auto' }
+  on_attach = require('jdtls').setup_dap({ hotcodereplace = 'false' }),
   -- Language server `initializationOptions`
   -- You need to extend the `bundles` with paths to jar files
   -- if you want to use additional eclipse.jdt.ls plugins.
@@ -162,18 +144,17 @@ local config = {
   init_options = {
     bundles = {
       home ..
-      'AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.44.0.jar' }
+      'AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.45.0.jar' }
   }
 }
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
-require('jdtls').start_or_attach(config)
-
-
+jdtls.start_or_attach(config)
 
 
 -- debug
 local debug_session_active = false;
+
 local dap = require('dap')
 dap.listeners.after.event_initialized["debug_on_save"] = function()
   debug_session_active = true
@@ -190,6 +171,7 @@ local function setup_debug()
     vim.cmd('wall')
     require('jdtls.dap').setup_dap_main_class_configs()
   end
+  require('jdtls.dap').setup_dap_main_class_configs()
   require('dap').continue()
 end
 
@@ -198,7 +180,7 @@ local function find_files_curr_dir()
 end
 
 
-vim.keymap.set('n', "<leader>sf", find_files_curr_dir, {desc = '[S]earch [F]iles'})
+vim.keymap.set('n', "<leader>sf", find_files_curr_dir, { desc = '[S]earch [F]iles' })
 
 -- require('jdtls.dap').setup_dap_main_class_configs()
 --
