@@ -8,20 +8,21 @@ dapp.setup(home .. "AppData\\Local\\nvim-data\\mason\\packages\\debugpy\\venv\\S
 
 local debug_session_active = false;
 
+local dap = require('dap')
 
-dapp.listeners.after.event_initialized["debug_on_save"] = function()
+dap.listeners.after.event_initialized["debug_on_save"] = function()
   debug_session_active = true
 end
-dapp.listeners.before.event_terminated["debug_on_save"] = function()
+dap.listeners.before.event_terminated["debug_on_save"] = function()
   debug_session_active = false
 end
-dapp.listeners.before.event_exited["debug_on_save"] = function()
+dap.listeners.before.event_exited["debug_on_save"] = function()
   debug_session_active = false
 end
 
 local function setup_debug()
   if debug_session_active == false then
-    vim.cmd('write')
+    vim.cmd('wall')
   end
   require('dap').continue()
 end

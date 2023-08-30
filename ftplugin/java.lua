@@ -14,6 +14,8 @@ vim.bo.expandtab = true -- always uses spaces instead of tab characters (et).
 vim.bo.softtabstop = 2  -- number of spaces a <Tab> counts for. When 0, feature is off (sts).
 vim.o.pumheight = 7
 
+vim.opt.colorcolumn = "80"
+vim.cmd('set fileformat=dos')
 
 
 -- 💀
@@ -104,7 +106,7 @@ local config = {
     -- 💀
     '-jar',
     home ..
-    'AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    'AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
@@ -122,7 +124,7 @@ local config = {
     '-data', workspace_folder
   },
   root_dir = root_dir,
-  -- capabilities = capabilities,
+  capabilities = capabilities,
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
   -- for a list of options
@@ -144,7 +146,7 @@ local config = {
   init_options = {
     bundles = {
       home ..
-      'AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.45.0.jar' }
+      'AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.47.0.jar' }
   }
 }
 -- This starts a new client & server,

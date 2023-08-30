@@ -1,6 +1,8 @@
-local home = "C:/Users/Olivier/"
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+vim.cmd('set fileformat=dos')
 -- Normal setup
 
 local dap = require("dap")
@@ -32,7 +34,7 @@ local rt = require('rust-tools').setup()
 
 
 -- local extension_path = home .. ".vscode/extensions/vadimcn.vscode-lldb-1.9.0/" -- Update this path
-local extension_path = home .. "AppData/Local/nvim-data/mason/packages/codelldb/extension/" -- Update this path
+local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/" -- Update this path
 local codelldb_path = extension_path .. "adapter/codelldb.exe"
 -- local liblldb_path = "C:/Users/Jopioligui/AppData/Local/nvim-data/mason/packages/codelldb/extension/lldb/bin/liblldb.dll"
 -- local liblldb_path = "C:/Users/Jopioligui/AppData/Local/nvim-data/mason/packages/codelldb/extension/lldb/lib/liblldb.lib"
