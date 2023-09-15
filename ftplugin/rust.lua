@@ -1,4 +1,3 @@
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -54,8 +53,8 @@ dap.adapters.codelldb = {
   }
 }
 
-local root_dir = vim.fs.dirname(vim.fs.find({'Cargo.toml', '.git'}, { upward = true })[1])
-local program_name =  vim.fn.fnamemodify(root_dir, ':p:h:t')
+local root_dir = vim.fs.dirname(vim.fs.find({ 'Cargo.toml', '.git' }, { upward = true })[1])
+local program_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
 local program_path = root_dir .. '/target/debug/' .. program_name .. '.pdb'
 
 dap.configurations.rust = {

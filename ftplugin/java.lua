@@ -1,4 +1,3 @@
-local home = 'C:\\Users\\Olivier\\'
 local jdtls = require('jdtls')
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -42,7 +41,7 @@ end
 -- The on_attach function is used to set key maps after the language server
 -- attaches to the current buffer
 local on_attach = function(_, bufnr)
-  require('jdtls.dap').setup_dap_main_class_configs()
+  -- require('jdtls.dap').setup_dap_main_class_configs()
   -- Regular Neovim LSP client keymappings
   -- local bufopts = { noremap = true, silent = true, buffer = bufnr }
   -- nnoremap('gD', vim.lsp.buf.declaration, bufopts, "Go to declaration")
@@ -89,7 +88,7 @@ local config = {
   cmd = {
 
     -- 💀
-    'C:\\Program Files\\OpenJDK\\jdk-20.0.1\\bin\\java.exe',   -- or '/path/to/java17_or_newer/bin/java'
+    'C:\\Program Files\\OpenJDK\\jdk-20.0.1\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
@@ -105,15 +104,15 @@ local config = {
 
     -- 💀
     '-jar',
-    home ..
-    'AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar',
+    vim.fn.stdpath("data") ..
+    '\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
 
 
     -- 💀
-    '-configuration', home .. 'AppData\\Local\\nvim-data\\mason\\packages\\jdtls\\config_win',
+    '-configuration', vim.fn.stdpath("data") .. '\\mason\\packages\\jdtls\\config_win',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
     -- Must point to the                      Change to one of `linux`, `win` or `mac`
     -- eclipse.jdt.ls installation            Depending on your system.
@@ -145,8 +144,8 @@ local config = {
 
   init_options = {
     bundles = {
-      home ..
-      'AppData\\Local\\nvim-data\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.47.0.jar' }
+      vim.fn.stdpath("data") ..
+      '\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.47.0.jar' }
   }
 }
 -- This starts a new client & server,
@@ -154,6 +153,7 @@ local config = {
 jdtls.start_or_attach(config)
 
 
+require("jdtls.setup").add_commands() -- not related to debugging but you probably want this
 -- debug
 local debug_session_active = false;
 
