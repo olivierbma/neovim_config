@@ -55,6 +55,13 @@ return {
 
 		})
 
+		ls.add_snippets("typst", {
+			s("template", {
+				t("#import \"@local/template:"), i(1, "1.0.0"), t("\": *"),
+				t({ "", "#show: basic_styling" })
+			})
+		})
+
 		luasnip.config.setup {}
 
 		cmp.setup {
