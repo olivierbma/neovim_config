@@ -38,6 +38,76 @@ return {
 		local ms = ls.multi_snippet
 		local k = require("luasnip.nodes.key_indexer").new_key
 
+		local function jdocsnip(args)
+			local nodes = {
+				t({ "/**", " * " }),
+				r(1, "desc", i(1, "A short Description")),
+				t({ "", "" }),
+			}
+
+			-- At least one param.
+			if string.find(args[2][1], ", ") then
+				vim.list_extend(nodes, { t({ " * ", "" }) })
+			end
+
+			local insert = 2
+			for _, arg in ipairs(vim.split(args[2][1], ", ", true)) do
+				-- Get actual name parameter.
+				arg = vim.split(arg, " ", true)[2]
+				if arg then
+					local inode = r(insert, "arg" .. arg, i(1))
+
+					vim.list_extend(nodes,
+						{ t({ " * @param " .. arg .. " " }), inode, t({ "", "" }) })
+
+					insert = insert + 1
+				end
+			end
+
+			if args[1][1] ~= "void" then
+				local inode = r(insert, "ret", i(1))
+
+				vim.list_extend(nodes, { t({ " * ", " * @return " }), inode, t({ "", "" }) })
+				insert = insert + 1
+			end
+
+			if vim.tbl_count(args[3]) ~= 1 then
+				local exc = string.gsub(args[3][2], " throws ", "")
+				local ins = r(insert, "ex", i(1))
+				vim.list_extend(nodes, { t({ " * ", " * @throws " .. exc .. " " }), ins, t({ "", "" }) })
+				insert = insert + 1
+			end
+
+			vim.list_extend(nodes, { t({ " */" }) })
+
+			local snip = sn(nil, nodes)
+			return snip
+		end
+
+		ls.add_snippets('java', {
+			s("func", {
+				d(6, jdocsnip, { 2, 4, 5 }),
+				t({ "", "" }),
+				i(1, 'private'),
+				t(' '),
+				i(2, 'int'),
+				t(" "),
+				i(3, "myFunc"),
+				t("("),
+				i(4),
+				t(")"),
+				c(5, {
+					t(""),
+					sn(nil, {
+						t({ "", " throws " }),
+						i(1),
+					}),
+				}),
+				t({ " {", "\t" }),
+				i(0),
+				t({ "", "}" }),
+			}),
+		})
 
 		ls.add_snippets("java", {
 			s("println", {
@@ -48,7 +118,7 @@ return {
 			}),
 			s("for", {
 				t("for(int i = 0; i < "), i(1, "variable"), t({ "; i++) {", "\t" }), i(2), t({ "", "}" })
-			})
+			}),
 
 		})
 
@@ -58,7 +128,108 @@ return {
 				t({ "", "#show: basic_styling" })
 			})
 		})
+		local function jdocsnip(args)
+			local nodes = {
+				t({ "/**", " * " }),
+				r(1, "desc", i(1, "A short Description")),
+				t({ "", "" }),
+			}
 
+			-- At least one param.
+			if string.find(args[2][1], ", ") then
+				vim.list_extend(nodes, { t({ " * ", "" }) })
+			end
+
+			local insert = 2
+			for _, arg in ipairs(vim.split(args[2][1], ", ", true)) do
+				-- Get actual name parameter.
+				arg = vim.split(arg, " ", true)[2]
+				if arg then
+					local inode = r(insert, "arg" .. arg, i(1))
+
+					vim.list_extend(nodes,
+						{ t({ " * @param " .. arg .. " " }), inode, t({ "", "" }) })
+
+					insert = insert + 1
+				end
+			end
+
+			if args[1][1] ~= "void" then
+				local inode = r(insert, "ret", i(1))
+
+				vim.list_extend(nodes, { t({ " * ", " * @return " }), inode, t({ "", "" }) })
+				insert = insert + 1
+			end
+
+			if vim.tbl_count(args[3]) ~= 1 then
+				local exc = string.gsub(args[3][2], " throws ", "")
+				local ins = r(insert, "ex", i(1))
+				vim.list_extend(nodes, { t({ " * ", " * @throws " .. exc .. " " }), ins, t({ "", "" }) })
+				insert = insert + 1
+			end
+
+			vim.list_extend(nodes, { t({ " */" }) })
+
+			local snip = sn(nil, nodes)
+			return snip
+		end
+
+		ls.snippets = {
+			all = {
+				s("test_stored_with_dyn_lambda", {
+					i(1, "Pretext"),
+					t(" "),
+					c(2, {
+						sn(nil, r(1, 1)),
+						sn(nil, {
+							i(1, "extra_arg"),
+							t(" "),
+							r(2, 1),
+						}),
+					}),
+				}, {
+					stored = {
+						[1] = sn(nil, {
+							i(1, "reversed text"),
+							t(" "),
+							dl(2, l._1:reverse(), 1), --< dynamic lambdas resets its content
+						}),
+					},
+				}),
+				s("test_dynamic", {
+					d(6, jdocsnip, { 2, 4, 5 }),
+					t({ "", "" }),
+					c(1, {
+						t("public "),
+						t("private "),
+					}),
+					c(2, {
+						t("void"),
+						t("String"),
+						t("char"),
+						t("int"),
+						t("double"),
+						t("boolean"),
+						i(nil, ""),
+					}),
+					t(" "),
+					i(3, "myFunc"),
+					t("("),
+					i(4),
+					t(")"),
+					c(5, {
+						t(""),
+						sn(nil, {
+							t({ "", " throws " }),
+							i(1),
+						}),
+					}),
+					t({ " {", "\t" }),
+					i(0),
+					t({ "", "}" }),
+				}),
+			},
+		}
 		luasnip.config.setup {}
 
 		cmp.setup {
