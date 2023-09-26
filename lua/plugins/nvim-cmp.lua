@@ -40,9 +40,6 @@ return {
 
 
 		ls.add_snippets("java", {
-			s("eachfor", {
-				t("Tjis is nice")
-			}),
 			s("println", {
 				t("System.out.println("), i(1, "texte"), t(");")
 			}),

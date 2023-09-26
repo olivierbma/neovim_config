@@ -215,6 +215,8 @@ vim.keymap.set('n', 'gd', require('vim.lsp.buf').definition, { desc = 'LSP [G]ot
 
 vim.keymap.set('n', 'gp', "<C-^>", { desc = "[G]oto [P]revious buffer" })
 
+local lsp_zero = require('lsp-zero')
+lsp_zero.extend_lspconfig()
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -257,10 +259,19 @@ mason_lspconfig.setup_handlers {
     }
   end,
 
+  ['lua_ls'] = function()
+    local lua_opts = lsp_zero.nvim_lua_ls({
+      single_file_support = false,
+    })
+    require('lspconfig').lua_ls.setup(lua_opts)
+  end,
+
   ["jdtls"] = function()
 
   end
 }
+
+
 
 
 

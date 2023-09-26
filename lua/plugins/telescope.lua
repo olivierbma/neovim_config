@@ -1,18 +1,18 @@
-return { 
+return {
 	'nvim-telescope/telescope.nvim',
 	version = '*',
 	dependencies = { 'nvim-lua/plenary.nvim' },
 
 	config = function()
 		require('telescope').setup {
- 			defaults = {
+			defaults = {
 				mappings = {
-      					i = {
-        					['<C-u>'] = false,
-        					['<C-d>'] = false,
-      					},
-    				},
-  			},
+					i = {
+						['<C-u>'] = false,
+						['<C-d>'] = false,
+					},
+				},
+			},
 		}
 
 		pcall(require('telescope').load_extension, 'fzf')
@@ -20,11 +20,11 @@ return {
 		vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 		vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
 		vim.keymap.set('n', '<leader>/', function()
-  		-- You can pass additional configuration to telescope to change theme, layout, etc.
-  		require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    			winblend = 10,
-    			previewer = false,
-  		})
+			-- You can pass additional configuration to telescope to change theme, layout, etc.
+			require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+				winblend = 10,
+				previewer = false,
+			})
 		end, { desc = '[/] Fuzzily search in current buffer' })
 
 		vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
@@ -34,6 +34,3 @@ return {
 		vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 	end
 }
-
-
-
