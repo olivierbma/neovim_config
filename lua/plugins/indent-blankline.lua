@@ -11,12 +11,9 @@ return {
 
     require('ibl').setup({
       scope = {
-        enable = true,
         highlight = highlight,
 
       }
-
-
     })
   end
 }
