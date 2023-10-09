@@ -16,16 +16,8 @@ require('lspconfig').typst_lsp.setup {
 		-- serverPath = "" -- Normally, there is no need to uncomment it.
 	}
 }
--- local knap = require 'plugins.knap'
--- local gknapsettings = {
--- 	typoutputext = "pdf",
--- 	typtopdf = "echo refreshing",
--- 	typtopdfviewerlaunch = "typst watch main.typ",
--- 	typtopdfviewerrefresh = "Close viewer"
--- }
--- vim.g.knap_settings = gknapsettings
--- -- F7 toggles the auto-processing on and off
--- kmap({ 'n', 'v', 'i' }, '<F7>', function() require("knap").toggle_autopreviewing() end)
+
+
 require('lspconfig').ltex.setup({
 	filetypes = { "vimwiki", "markdown", "md", "pandoc", "vimwiki.markdown.pandoc" }, --"typst"-- },
 	flags = { debounce_text_changes = 300 },
