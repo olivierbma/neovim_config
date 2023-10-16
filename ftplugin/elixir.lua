@@ -5,7 +5,7 @@ vim.bo.softtabstop = 2  -- number of spaces a <Tab> counts for. When 0, feature 
 vim.o.pumheight = 7
 
 vim.opt.colorcolumn = "80"
-vim.cmd('set fileformat=dos')
+vim.cmd('set fileformat=unix')
 
 
 
