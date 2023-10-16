@@ -211,6 +211,24 @@ vim.keymap.set('n', 'gD', require('vim.lsp.buf').declaration, { desc = 'LSP [G]o
 vim.keymap.set('n', 'gI', require('vim.lsp.buf').implementation, { desc = 'LSP [G]oto [I]plementation' })
 vim.keymap.set('n', 'gd', require('vim.lsp.buf').definition, { desc = 'LSP [G]oto [D]efinition' })
 
+
+
+-- Setup neovim lua configuration
+require("neodev").setup({
+  library = {
+    enabled = true,
+    runtime = true,
+
+    plugins = { "nvim-dap-ui" },
+    types = true
+  },
+  lspconfig = true,
+  pathStrict = true,
+  ...
+})
+
+
+
 -- Buffer navigation keymaps
 
 vim.keymap.set('n', 'gp', "<C-^>", { desc = "[G]oto [P]revious buffer" })
@@ -286,11 +304,7 @@ parser_config.typst = {
 }
 
 
--- Setup neovim lua configuration
-require("neodev").setup({
-  library = { plugins = { "nvim-dap-ui" }, types = true },
-  ...
-})
+
 
 vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current buffer' })
 
