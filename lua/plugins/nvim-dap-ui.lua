@@ -82,7 +82,7 @@ return {
 		vim.keymap.set("n", "<F10>", require('dap').step_over, { desc = 'Execute function as a single command' })
 		vim.keymap.set("n", "<F11>", require('dap').step_into, { desc = 'Execute line and go to the next one' })
 
-		vim.keymap.set("n", "<C-F9>", conditional_breakpoint, { desc = 'Set a breakpoint with a condition' })
+		vim.keymap.set("n", "<F33>", conditional_breakpoint, { desc = 'Set a breakpoint with a condition' })
 
 
 
