@@ -76,6 +76,7 @@ return {
 			local cond = vim.fn.input("Breakpoint condition: ")
 			require("dap").set_breakpoint(cond)
 		end
+
 		vim.keymap.set("n", "<F9>", require('dap').toggle_breakpoint,
 			{ desc = 'Add or remove a breakpoint to a line' })
 		vim.keymap.set("n", "<F10>", require('dap').step_over, { desc = 'Execute function as a single command' })
