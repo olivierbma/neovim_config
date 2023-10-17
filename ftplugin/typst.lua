@@ -46,12 +46,15 @@ vim.keymap.set('n', '<C-i>', function()
 
 	-- format the buffer
 	vim.cmd('%! typstfmt --output -')
-	local command = "%s/\r//g"
-	vim.cmd(command)
+	if jit.os == 'Windows' then
+		local command = "%s/\r//g"
+		vim.cmd(command)
 
-	-- delete the stdin decorator
-	vim.api.nvim_win_set_cursor(0, { 1, 1 })
-	vim.api.nvim_del_current_line()
+		-- delete the stdin decorator
+		vim.api.nvim_win_set_cursor(0, { 1, 1 })
+		vim.api.nvim_del_current_line()
+	end
+
 
 	-- go back to line nu,ber before formatting
 	vim.api.nvim_win_set_cursor(0, { line, col })
