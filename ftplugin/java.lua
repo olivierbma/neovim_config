@@ -88,7 +88,7 @@ local config = {
   cmd = {
 
     -- 💀
-    'C:\\Program Files\\OpenJDK\\jdk-20.0.2\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
+    'C:\\Program Files\\OpenJDK\\jdk-21.0.1\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
     -- 'C:\\Program Files\\Java\\jre-1.8\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
