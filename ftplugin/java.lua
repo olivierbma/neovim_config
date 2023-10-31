@@ -138,6 +138,10 @@ local config = {
             name = "JavaSE-1.8",
             path = "C:\\Program Files\\Java\\jre-1.8", -- or '/path/to/java17_or_newer/bin/java'
           },
+          {
+            name = "JavaSE-19",
+            path = "C:\\Program Files\\OpenJDK\\jdk-19.0.2"
+          }
         }
       }
     }
@@ -166,24 +170,10 @@ jdtls.start_or_attach(config)
 
 require("jdtls.setup").add_commands() -- not related to debugging but you probably want this
 -- debug
-local debug_session_active = false;
-
-local dap = require('dap')
-dap.listeners.after.event_initialized["debug_on_save"] = function()
-  debug_session_active = true
-end
-dap.listeners.before.event_terminated["debug_on_save"] = function()
-  debug_session_active = false
-end
-dap.listeners.before.event_exited["debug_on_save"] = function()
-  debug_session_active = false
-end
 
 local function setup_debug()
-  if debug_session_active == false then
-    vim.cmd('wall')
-    require('jdtls.dap').setup_dap_main_class_configs()
-  end
+  vim.cmd('wall')
+  require('jdtls.dap').setup_dap_main_class_configs()
   require('jdtls.dap').setup_dap_main_class_configs()
   require('dap').continue()
 end
@@ -191,6 +181,8 @@ end
 local function find_files_curr_dir()
   require('telescope.builtin').find_files({ root_dir })
 end
+
+
 
 
 vim.keymap.set('n', "<leader>sf", find_files_curr_dir, { desc = '[S]earch [F]iles' })
