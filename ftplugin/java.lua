@@ -14,7 +14,7 @@ vim.bo.softtabstop = 2  -- number of spaces a <Tab> counts for. When 0, feature 
 vim.o.pumheight = 7
 
 vim.opt.colorcolumn = "80"
-vim.cmd('set fileformat=dos')
+vim.cmd('set fileformat=unix')
 
 
 -- 💀
@@ -88,7 +88,7 @@ local config = {
   cmd = {
 
     -- 💀
-    'C:\\Program Files\\OpenJDK\\jdk-21.0.1\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
+    'java', -- or '/path/to/java17_or_newer/bin/java'
     -- 'C:\\Program Files\\Java\\jre-1.8\\bin\\java.exe', -- or '/path/to/java17_or_newer/bin/java'
     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
@@ -107,14 +107,14 @@ local config = {
     -- 💀
     '-jar',
     vim.fn.stdpath("data") ..
-    '\\mason\\packages\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar',
+    '/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
 
 
     -- 💀
-    '-configuration', vim.fn.stdpath("data") .. '\\mason\\packages\\jdtls\\config_win',
+    '-configuration', vim.fn.stdpath("data") .. '/mason/packages/jdtls/config_linux',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
     -- Must point to the                      Change to one of `linux`, `win` or `mac`
     -- eclipse.jdt.ls installation            Depending on your system.
@@ -136,11 +136,15 @@ local config = {
           {
 
             name = "JavaSE-1.8",
-            path = "C:\\Program Files\\Java\\jre-1.8", -- or '/path/to/java17_or_newer/bin/java'
+            path = "/home/olivier/.asdf/installs/java/adoptopenjdk-8.0.392+8", -- or '/path/to/java17_or_newer/bin/java'
           },
           {
             name = "JavaSE-19",
-            path = "C:\\Program Files\\OpenJDK\\jdk-19.0.2"
+            path = "/home/olivier/.asdf/installs/java/openjdk-19.0.2"
+          },
+          {
+            name = "JavaSE-11",
+            path = "/home/olivier/.asdf/installs/java/openjdk-11.0.2"
           }
         }
       }
@@ -160,7 +164,7 @@ local config = {
   init_options = {
     bundles = {
       vim.fn.stdpath("data") ..
-      '\\mason\\packages\\java-debug-adapter\\extension\\server\\com.microsoft.java.debug.plugin-0.47.0.jar' }
+      '/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-0.47.0.jar' }
   }
 }
 -- This starts a new client & server,
@@ -173,7 +177,6 @@ require("jdtls.setup").add_commands() -- not related to debugging but you probab
 
 local function setup_debug()
   vim.cmd('wall')
-  require('jdtls.dap').setup_dap_main_class_configs()
   require('jdtls.dap').setup_dap_main_class_configs()
   require('dap').continue()
 end

@@ -1,7 +1,7 @@
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-vim.cmd('set fileformat=dos')
+vim.cmd('set fileformat=unix')
 -- Normal setup
 
 local dap = require("dap")
@@ -19,10 +19,8 @@ dap.listeners.before.event_exited["debug_on_save"] = function()
 end
 
 local function setup_debug()
-  if debug_session_active == false then
-    vim.cmd('wa')
-    os.execute('cargo build')
-  end
+  vim.cmd('wa')
+  os.execute('cargo build')
   require('dap').continue()
 end
 
@@ -34,10 +32,10 @@ local rt = require('rust-tools').setup()
 
 -- local extension_path = home .. ".vscode/extensions/vadimcn.vscode-lldb-1.9.0/" -- Update this path
 local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/" -- Update this path
-local codelldb_path = extension_path .. "adapter/codelldb.exe"
+local codelldb_path = extension_path .. "adapter/codelldb"
 -- local liblldb_path = "C:/Users/Jopioligui/AppData/Local/nvim-data/mason/packages/codelldb/extension/lldb/bin/liblldb.dll"
 -- local liblldb_path = "C:/Users/Jopioligui/AppData/Local/nvim-data/mason/packages/codelldb/extension/lldb/lib/liblldb.lib"
-local liblldb_path = extension_path .. "lldb/lib/liblldb.lib"
+local liblldb_path = extension_path .. "lldb/lib/liblldb"
 -- local liblldb_path =  extension_path .. "adapter/codelldb.dll"
 
 
@@ -55,7 +53,7 @@ dap.adapters.codelldb = {
 
 local root_dir = vim.fs.dirname(vim.fs.find({ 'Cargo.toml', '.git' }, { upward = true })[1])
 local program_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
-local program_path = root_dir .. '/target/debug/' .. program_name .. '.pdb'
+local program_path = root_dir .. '/target/debug/' .. program_name
 
 dap.configurations.rust = {
   {

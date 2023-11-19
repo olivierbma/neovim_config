@@ -48,10 +48,10 @@ return {
 			}, {
 				elements = { {
 					id = "console",
-					size = 0.66
+					size = 0.65
 				}, {
 					id = "repl",
-					size = 0.34
+					size = 0.35
 				}, },
 				position = "bottom",
 				size = 10
@@ -94,7 +94,7 @@ return {
 			-- dapui.close()
 		end
 		dap.listeners.before.event_exited["dapui_config"] = function()
-			dapui.close()
+			-- dapui.close()
 		end
 
 		vim.keymap.set('n', 'dq', dapui.close, { desc = "[D]ap-ui [Q]uit" })

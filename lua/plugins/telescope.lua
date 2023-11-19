@@ -34,6 +34,9 @@ return {
 
 		pcall(require('telescope').load_extension, 'fzf')
 
+
+		require('telescope').setup { defaults = { file_ignore_patterns = { "build" } } }
+
 		vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles,
 			{ desc = '[?] Find recently opened files' })
 		vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers,
@@ -54,5 +57,8 @@ return {
 		vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 		vim.keymap.set('n', '<leader>so', require('telescope.builtin').lsp_document_symbols,
 			{ desc = '[S]earch [O]utline' })
+
+		vim.keymap.set('n', '<leader>sm', require('telescope.builtin').man_pages,
+			{ desc = '[S]earch [M]an pages' })
 	end
 }

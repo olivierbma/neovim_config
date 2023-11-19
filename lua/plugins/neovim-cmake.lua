@@ -1,3 +1,3 @@
 return {
-	'Shatur/neovim-cmake'
+	'ilyachur/cmake4vim',
 }

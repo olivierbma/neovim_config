@@ -4,10 +4,10 @@ vim.bo.expandtab = true -- always uses spaces instead of tab characters (et).
 vim.bo.softtabstop = 2  -- number of spaces a <Tab> counts for. When 0, feature is off (sts).
 vim.o.pumheight = 7
 vim.opt.colorcolumn = "80"
-vim.cmd('set fileformat=dos')
+vim.cmd('set fileformat=unix')
 
 
-vim.g.typst_pdf_viewer = "SumatraPDF"
+vim.g.typst_pdf_viewer = "evince"
 vim.cmd("set lazyredraw nocursorline norelativenumber")
 vim.cmd("set synmaxcol=30")
 
@@ -21,7 +21,7 @@ require('lspconfig').typst_lsp.setup {
 
 
 require('lspconfig').ltex.setup({
-	filetypes = { "vimwiki", "markdown", "md", "pandoc", "vimwiki.markdown.pandoc", "typst" }, --"typst"-- },
+	filetypes = { "vimwiki", "markdown", "md", "pandoc", "vimwiki.markdown.pandoc" }, --"typst"-- },
 	flags = { debounce_text_changes = 300 },
 	settings = {
 		ltex = {
