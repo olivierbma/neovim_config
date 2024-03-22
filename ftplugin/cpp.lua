@@ -6,9 +6,61 @@ vim.o.pumheight = 7
 
 vim.opt.colorcolumn = "80"
 
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
 local root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1])
 local program_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
 
+local function pick_one_sync(items, prompt, label_fn)
+  local choices = { prompt }
+  for i, item in ipairs(items) do
+    table.insert(choices, string.format('%d: %s', i, label_fn(item)))
+  end
+  local choice = vim.fn.inputlist(choices)
+  if choice < 1 or choice > #items then
+    return nil
+  end
+  return items[choice]
+end
+
+local function pick_one(items, prompt, label_fn, cb)
+  local co
+  if not cb then
+    co = coroutine.running()
+    if co then
+      cb = function(item)
+        coroutine.resume(co, item)
+      end
+    end
+  end
+  cb = vim.schedule_wrap(cb)
+  if vim.ui then
+    vim.ui.select(items, {
+      prompt = prompt,
+      format_item = label_fn,
+    }, cb)
+  else
+    local result = pick_one_sync(items, prompt, label_fn)
+    cb(result)
+  end
+  if co then
+    return coroutine.yield()
+  end
+end
+
+
+
+local function table_contains(tbl, x)
+  local found = false
+  for _, v in pairs(tbl) do
+    if v == x then
+      found = true
+    end
+  end
+  return found
+end
 
 function CMakeSetup()
   root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1])
@@ -75,7 +127,7 @@ vim.keymap.set("n", "<F5>", setup_debug, { desc = 'Start or continue debug execu
 -- local extension_path = home .. ".vscode/extensions/vadimcn.vscode-lldb-1.9.0/" -- Update this path
 local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/" -- Update this path
 local codelldb_path = extension_path .. "adapter/codelldb"
-local codelldb = "~/Documents/archive/codelldb-x86_64-linux/extension/adapter/codelldb"
+local codelldb = "/home/olivier/Documents/archive/codelldb-x86_64-linux/extension/adapter/codelldb"
 -- local liblldb_path = "C:/Users/Jopioligui/AppData/Local/nvim-data/mason/packages/codelldb/extension/lldb/bin/liblldb.dll"
 -- local liblldb_path = "C:/Users/Jopioligui/AppData/Local/nvim-data/mason/packages/codelldb/extension/lldb/lib/liblldb.lib"
 local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
@@ -95,7 +147,6 @@ dap.adapters.codelldb = {
 }
 
 
-local program_path = root_dir .. '/build/src/' .. program_name -- .. '.exe'
 
 dap.configurations.cpp = {
   {
@@ -119,50 +170,3 @@ dap.configurations.cpp = {
     stopOnEntry = false,
   },
 }
-
-function pick_one(items, prompt, label_fn, cb)
-  local co
-  if not cb then
-    co = coroutine.running()
-    if co then
-      cb = function(item)
-        coroutine.resume(co, item)
-      end
-    end
-  end
-  cb = vim.schedule_wrap(cb)
-  if vim.ui then
-    vim.ui.select(items, {
-      prompt = prompt,
-      format_item = label_fn,
-    }, cb)
-  else
-    local result = M.pick_one_sync(items, prompt, label_fn)
-    cb(result)
-  end
-  if co then
-    return coroutine.yield()
-  end
-end
-
-function pick_one_sync(items, prompt, label_fn)
-  local choices = { prompt }
-  for i, item in ipairs(items) do
-    table.insert(choices, string.format('%d: %s', i, label_fn(item)))
-  end
-  local choice = vim.fn.inputlist(choices)
-  if choice < 1 or choice > #items then
-    return nil
-  end
-  return items[choice]
-end
-
-function table_contains(tbl, x)
-  local found = false
-  for _, v in pairs(tbl) do
-    if v == x then
-      found = true
-    end
-  end
-  return found
-end

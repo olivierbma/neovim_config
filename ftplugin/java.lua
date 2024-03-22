@@ -2,6 +2,8 @@ local jdtls = require('jdtls')
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local extendedClientCapabilities = jdtls.extendedClientCapabilities
+extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 
 vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current buffer' })
@@ -107,7 +109,7 @@ local config = {
     -- 💀
     '-jar',
     vim.fn.stdpath("data") ..
-    '/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar',
+    '/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.600.v20231012-1237.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
@@ -131,7 +133,14 @@ local config = {
   -- for a list of options
   settings = {
     java = {
+      implementationsCodeLens = {
+        enabled = true,
+      },
+      referencesCodeLens = {
+        enabled = true,
+      },
       configuration = {
+
         runtimes = {
           {
 
@@ -145,13 +154,23 @@ local config = {
           {
             name = "JavaSE-11",
             path = "/home/olivier/.asdf/installs/java/openjdk-11.0.2"
+          },
+          {
+            name = "JavaSE-21",
+            path = "/home/olivier/.asdf/installs/java/openjdk-21.0.1"
           }
         }
       }
     }
   },
+  signatureHelp = { enabled = true },
+
   -- { hotcodereplace = 'auto' }
-  on_attach = require('jdtls').setup_dap({ hotcodereplace = 'false' }),
+  on_attach = {
+    vim.lsp.codelens.refresh(),
+    require('jdtls').setup_dap({ hotcodereplace = 'auto' }),
+    require("jdtls.setup").add_commands(),
+  },
   -- Language server `initializationOptions`
   -- You need to extend the `bundles` with paths to jar files
   -- if you want to use additional eclipse.jdt.ls plugins.
@@ -164,15 +183,24 @@ local config = {
   init_options = {
     bundles = {
       vim.fn.stdpath("data") ..
-      '/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-0.47.0.jar' }
+      '/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-0.47.0.jar'
+    },
+    extendedClientCapabilities = extendedClientCapabilities,
   }
 }
+vim.lsp.codelens.refresh()
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
 jdtls.start_or_attach(config)
 
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  pattern = { "*.java" },
+  callback = function()
+    local _, _ = pcall(vim.lsp.codelens.refresh)
+  end,
+})
 
-require("jdtls.setup").add_commands() -- not related to debugging but you probably want this
+
 -- debug
 
 local function setup_debug()

@@ -35,7 +35,7 @@ return {
 		pcall(require('telescope').load_extension, 'fzf')
 
 
-		require('telescope').setup { defaults = { file_ignore_patterns = { "build" } } }
+		require('telescope').setup { defaults = { file_ignore_patterns = { "build", "zig-out", "zig-cache" } } }
 
 		vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles,
 			{ desc = '[?] Find recently opened files' })

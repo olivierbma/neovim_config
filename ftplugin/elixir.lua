@@ -8,5 +8,4 @@ vim.opt.colorcolumn = "80"
 vim.cmd('set fileformat=unix')
 
 
-
 -- require('lspconfig').elixirls.setup({})
