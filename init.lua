@@ -214,18 +214,7 @@ vim.keymap.set('n', 'gd', require('vim.lsp.buf').definition, { desc = 'LSP [G]ot
 
 
 -- Setup neovim lua configuration
-require("neodev").setup({
-  library = {
-    enabled = true,
-    runtime = true,
-
-    plugins = { "nvim-dap-ui" },
-    types = true
-  },
-  lspconfig = true,
-  pathStrict = true,
-  ...
-})
+require("neodev").setup()
 
 
 
@@ -278,10 +267,16 @@ mason_lspconfig.setup_handlers {
   end,
 
   ['lua_ls'] = function()
-    local lua_opts = lsp_zero.nvim_lua_ls({
-      single_file_support = false,
+    require('lspconfig').lua_ls.setup({
+      settings = {
+        Lua = {
+          completion = {
+            callSnippet = "Replace"
+          }
+        }
+      }
+
     })
-    require('lspconfig').lua_ls.setup(lua_opts)
   end,
 
   ["jdtls"] = function()

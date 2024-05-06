@@ -2,8 +2,6 @@ local jdtls = require('jdtls')
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-local extendedClientCapabilities = jdtls.extendedClientCapabilities
-extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 
 vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current buffer' })
@@ -42,7 +40,7 @@ end
 
 -- The on_attach function is used to set key maps after the language server
 -- attaches to the current buffer
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- require('jdtls.dap').setup_dap_main_class_configs()
   -- Regular Neovim LSP client keymappings
   -- local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -81,6 +79,8 @@ local on_attach = function(_, bufnr)
   -- nnoremap('<leader>wl', function()
   --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   -- end, '[W]orkspace [L]ist Folders')
+  --
+  local _, _ = pcall(vim.lsp.codelens.refresh)
 end
 
 
@@ -109,7 +109,7 @@ local config = {
     -- 💀
     '-jar',
     vim.fn.stdpath("data") ..
-    '/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.600.v20231012-1237.jar',
+    '/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.800.v20240304-1850.jar',
     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
     -- Must point to the                                                     Change this to
     -- eclipse.jdt.ls installation                                           the actual version
@@ -133,14 +133,11 @@ local config = {
   -- for a list of options
   settings = {
     java = {
-      implementationsCodeLens = {
-        enabled = true,
-      },
-      referencesCodeLens = {
-        enabled = true,
+      eclipse = {
+        downloadSources = true,
       },
       configuration = {
-
+        updateBuildConfiguration = "interactive",
         runtimes = {
           {
 
@@ -158,19 +155,37 @@ local config = {
           {
             name = "JavaSE-21",
             path = "/home/olivier/.asdf/installs/java/openjdk-21.0.1"
+          },
+          {
+            name = "JavaSE-22",
+            path = "/home/olivier/.asdf/installs/java/openjdk-22"
           }
         }
-      }
-    }
-  },
-  signatureHelp = { enabled = true },
 
-  -- { hotcodereplace = 'auto' }
-  on_attach = {
-    vim.lsp.codelens.refresh(),
-    require('jdtls').setup_dap({ hotcodereplace = 'auto' }),
-    require("jdtls.setup").add_commands(),
+      },
+      maven = {
+        downloadSources = true,
+      },
+      referencesCodeLens = {
+        enabled = true,
+      },
+      references = {
+        includeDecompiledSources = true,
+      },
+      inlayHints = {
+        parameterNames = {
+          enabled = "all", -- literals, all, none
+        },
+      },
+      format = {
+        enabled = true,
+      },
+    },
+    signatureHelp = { enabled = true },
+    extendedClientCapabilities = capabilities,
   },
+  -- { hotcodereplace = 'auto' }
+  on_attach = on_attach,
   -- Language server `initializationOptions`
   -- You need to extend the `bundles` with paths to jar files
   -- if you want to use additional eclipse.jdt.ls plugins.
@@ -183,10 +198,11 @@ local config = {
   init_options = {
     bundles = {
       vim.fn.stdpath("data") ..
-      '/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-0.47.0.jar'
+      '/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-0.50.0.jar'
     },
-    extendedClientCapabilities = extendedClientCapabilities,
-  }
+    extendedClientCapabilities = capabilities,
+  },
+
 }
 vim.lsp.codelens.refresh()
 -- This starts a new client & server,
