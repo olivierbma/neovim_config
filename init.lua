@@ -337,3 +337,15 @@ vim.keymap.set('n', '<C-i>', vim.lsp.buf.format, { desc = 'format the current bu
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+
+
+----------- NEOTEST -----------------
+require("neotest").setup({
+  adapters = {
+    require("neotest-java")({
+      ignore_wrapper = false, -- whether to ignore maven/gradle wrapper
+      junit_jar = vim.fn.stdpath('data') .. '/neotest-java/junit-platform-console-standalone-1.10.1.jar',
+    })
+  }
+})
